@@ -14,7 +14,7 @@ const AddTask_pm = () => {
     projectId: "",
     moduleId: "",
     assignedDevelopers: [],
-    statusId: "67eb8d26088dd81c6481659f", // Default "To Do"
+    statusId: "67e3a0b62ef3e90b8601bbcf", // Default "To Do"
   });
 
   const [projects, setProjects] = useState([]);

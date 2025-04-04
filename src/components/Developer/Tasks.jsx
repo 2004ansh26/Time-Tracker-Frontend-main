@@ -11,6 +11,19 @@ const Tasks = () => {
     fetchTasks();
   }, []);
 
+  // Function to format time in HH:MM:SS
+const formatTime = (timeSpent) => {
+  if (!timeSpent || timeSpent <= 0) return "00:00:00";
+
+  const totalSeconds = Math.floor(timeSpent * 60); // Convert minutes to seconds
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
+
   const fetchTasks = async () => {
     try {
       // developerId = localStorage.getItem("id");
@@ -49,6 +62,7 @@ const Tasks = () => {
         setTasks(prevTasks => prevTasks.map(task => 
             task._id === taskId ? { ...task, ...data } : task
         ));
+        fetchTasks(); // Refresh tasks
     } catch (error) {
         console.error("Error stopping task:", error);
     }
@@ -82,11 +96,14 @@ const Tasks = () => {
           ))} */}
           {tasks.map((task) => (
             <div key={task._id} className="task-card">
+              <p>{task._id}</p>
               <h2>{task.title}</h2>
               <p>{task.description}</p>
               {/* <p>Status: {task.status_id?.statusName || "Unknown"}</p> */}
               <p>Status: {task.status_id?.statusName ?? "Unknown"}</p>
-              <p>Total Time Spent: {task.timeSpent} minutes</p>
+              {/* <p>Total Time Spent: {task.timeSpent} minutes</p> */}
+              <p>Total Time Spent: {formatTime(task.timeSpent)}</p>
+
               
               {task.status_id?.statusName === "pending" && (
                 <>
