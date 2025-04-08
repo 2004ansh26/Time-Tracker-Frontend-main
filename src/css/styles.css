@@ -29,6 +29,8 @@ body {
     padding: 20px;
     }
 
+
+
 /* Left Section (Form) */
 .form-container {
   flex: 1; /* Takes up available space */
@@ -92,7 +94,7 @@ body {
 
 .input-group input,
 .input-group select {
-  width: 100%;
+  width: 95%;
   padding: 12px;
   border-radius: 5px;
   border: 1px solid #ddd;
