@@ -56,6 +56,18 @@ const Reports = () => {
       <AdminNavbar />
       <div className="reports-container">
   {/* <h2 className="reports-title">Admin / Manager Reports</h2> */}
+      <button
+      onClick={() => window.open('http://localhost:8000/generate-report', '_parent')}
+      className="report-btn px-4 py-2 bg-green-600 text-white rounded-md"
+    >
+      Download Excel Report
+    </button>
+      <button
+      onClick={() => window.open('http://localhost:8000/report/task-time-report', '_parent')}
+      className="report-btn px-4 py-2 bg-green-600 text-white rounded-md"
+    >
+      Download Task Report
+    </button>
 
   <div className="reports-grid">
     {/* Time per Developer */}
