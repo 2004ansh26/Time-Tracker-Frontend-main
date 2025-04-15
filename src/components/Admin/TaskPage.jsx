@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Navbar from "./ProjectManagerNavbar"; 
-import "../../css/task.css";
+import Navbar from "./AdminNavbar";
+import "../../css/tasks.css";
 
-const TaskPage_pm = () => {
+const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
@@ -81,7 +81,7 @@ const TaskPage_pm = () => {
             ))}
           </select>
 
-          <Link to="/projectManager/addTask"> 
+          <Link to="/admin/addTask">
             <button className="new-module-btn">+ New Task</button>
           </Link>
         </div>
@@ -221,4 +221,4 @@ const TaskPage_pm = () => {
   );
 };
 
-export default TaskPage_pm;
+export default TaskPage;
