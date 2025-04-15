@@ -28,8 +28,9 @@ const ProjectManagerDashboard = () => {
       setMetrics((prev) => ({
         ...prev,
         totalProjects: projectData.length,
-        ongoingProjects: projectData.filter((p) => p.status === "ongoing").length,
+        ongoingProjects: projectData.filter((p) => p.status === "running").length,
         completedProjects: projectData.filter((p) => p.status === "completed").length,
+
       }));
     } catch (error) {
       console.error("Error fetching metrics:", error);
@@ -50,11 +51,12 @@ const ProjectManagerDashboard = () => {
     try {
       const response = await fetch("http://localhost:8000/getTask");
       const data = await response.json();
+      console.log(data);
       setTasks(data);
       setMetrics((prev) => ({
         ...prev,
-        pendingTasks: data.filter((task) => task.status === "pending").length,
-        overdueTasks: data.filter((task) => task.status === "overdue").length,
+        pendingTasks: data.filter((task) => task.status_id.statusName === "pending").length,
+        overdueTasks: data.filter((task) => task.status_id.statusName === "overdue").length,
       }));
     } catch (error) {
       console.error("Error fetching tasks:", error);
@@ -65,7 +67,10 @@ const ProjectManagerDashboard = () => {
     <div>
       <Navbar role="Project Manager" />
       <div className="dashboard-content">
-        <h1>Welcome back, Project Manager</h1>
+      <div className="dashboard-header">
+          <h1>Welcome back, Project Manager</h1>
+        </div>
+        {/* <h1>Welcome back, Project Manager</h1> */}
         <div className="cards-container">
           <div className="card">
             <h3>Total Projects</h3>
@@ -87,10 +92,10 @@ const ProjectManagerDashboard = () => {
             <h3>Overdue Tasks</h3>
             <p>{metrics.overdueTasks}</p>
           </div>
-          <div className="card">
+          {/* <div className="card">
             <h3>Developer Efficiency</h3>
             <p>{metrics.developerEfficiency}</p>
-          </div>
+          </div> */}
         </div>
 
         {/* Add charts or tables */}

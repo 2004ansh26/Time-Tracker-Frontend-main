@@ -1,104 +1,156 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import "../../css/navbar.css";
+import React, { useState, useEffect } from "react";
+import Navbar from "./ProjectManagerNavbar";
+import { useNavigate } from "react-router-dom";
+import "../../css/addModule.css"; // Updated CSS import
 
-const AdminNavbar = () => {
-  const location = useLocation();
+const AddModule_pm = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
+  const [projects, setProjects] = useState([]);
+  const [developers, setDevelopers] = useState([]);
+  const [selectedDevelopers, setSelectedDevelopers] = useState([]);
+  const [formData, setFormData] = useState({
+    projectId: "",
+    moduleName: "",
+    description: "",
+    estimatedHours: "",
+    startDate: "",
+  });
 
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/getAllProjects");
+        if (!response.ok) throw new Error("Failed to fetch projects");
+        const data = await response.json();
+        setProjects(data);
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+      }
+    };
+
+    fetchProjects();
   }, []);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    if (name === "projectId") {
+      const selectedProject = projects.find((project) => project._id === value);
+      setDevelopers(selectedProject?.dev_id || []);
+    }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("role");
-    localStorage.removeItem("id");
-    navigate("/login");
+  const handleDeveloperSelect = (event) => {
+    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+    setSelectedDevelopers(selectedOptions);
   };
 
-   // Close menu when clicking outside
-    useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (menuRef.current && !menuRef.current.contains(event.target)) {
-          setMenuOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Submitting data:", { ...formData, assignedDevelopers: selectedDevelopers });
+    try {
+      const response = await fetch("http://localhost:8000/addProjectModule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, assignedDevelopers: selectedDevelopers }),
+      });
+      if (!response.ok) throw new Error("Failed to add module");
+      alert("Module added successfully!");
+      navigate("/ProjectManager/addModule");
+    } catch (err) {
+      console.error("Error adding module:", err);
+      alert("Failed to add module. Please try again.");
+    }
+  };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <Link
-          to="/admin/dashboard"
-          className={`nav-link ${location.pathname === "/admin/dashboard" ? "active" : ""}`}
-        >
-          Dashboard
-        </Link>
-        <Link
-          to="/admin/projects"
-          className={`nav-link ${location.pathname === "/admin/projects" ? "active" : ""}`}
-        >
-          Projects
-        </Link>
-        <Link
-          to="/admin/taskpage"
-          className={`nav-link ${location.pathname === "/admin/taskpage" ? "active" : ""}`}
-        >
-          Tasks
-        </Link>
-        <Link
-          to="/admin/reports"
-          className={`nav-link ${location.pathname === "/admin/reports" ? "active" : ""}`}
-        >
-          Reports
-        </Link>
-        <Link
-          to="/admin/module"
-          className={`nav-link ${location.pathname === "/admin/modules" ? "active" : ""}`}
-        >
-          Modules
-        </Link>
-      </div>
+    <div>
+      <Navbar />
+      <div className="add-module-form">
+        <h1 className="page-title">Add Project Module</h1>
 
-      
-      <div className="navbar-right">
-        {username ? (
-          <div className="user-menu" onClick={toggleMenu}>
-            Welcome, {username} ▼
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Select Project:</label>
+            <select
+              name="projectId"
+              value={formData.projectId}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Select a Project --</option>
+              {projects.map((project) => (
+                <option key={project._id} value={project._id}>
+                  {project.title}
+                </option>
+              ))}
+            </select>
           </div>
-        ) : null}
 
-        {menuOpen && (
-          <div ref={menuRef} className="dropdown-card">
-            <div className="dropdown-item" onClick={() => navigate("/developer/notifications")}>
-              🔔 Notifications
-            </div>
-            <div className="dropdown-item" onClick={() => navigate("/developer/settings")}>
-              ⚙️ Settings
-            </div>
-            <div className="dropdown-item " onClick={handleLogout}>
-              🚪 Sign Out
-            </div>
+          <div className="form-group">
+            <label>Assign Developers:</label>
+            <select
+              multiple
+              onChange={handleDeveloperSelect}
+              className="developer-select"
+            >
+              {developers.map((dev) => (
+                <option key={dev._id} value={dev._id}>
+                  {dev.username}
+                </option>
+              ))}
+            </select>
           </div>
-        )}
+
+          <div className="form-group">
+            <label>Module Name:</label>
+            <input
+              type="text"
+              name="moduleName"
+              value={formData.moduleName}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Description:</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Estimated Hours:</label>
+            <input
+              type="number"
+              name="estimatedHours"
+              value={formData.estimatedHours}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Start Date:</label>
+            <input
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit">Add Module</button>
+        </form>
       </div>
-    </nav>
+    </div>
   );
 };
 
-export default AdminNavbar;
+export default AddModule_pm;

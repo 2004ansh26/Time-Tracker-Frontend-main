@@ -74,6 +74,7 @@ const DeveloperDashboard = () => {
 
         {/* Add charts or tables */}
         <div className="weekly-hours-container">
+          
           {/* Placeholder for charts */}
         </div>
       </div>

@@ -27,6 +27,8 @@ import ProjectManagerProjects from "./components/ProjectManager/Projects";
 // import ProjectManagerTasks from "./components/ProjectManager/Tasks";
 import ProjectManagerDevelopers from "./components/ProjectManager/Developers";
 import ProjectManagerReports from "./components/ProjectManager/Reports";
+// import { AddProject_PM } from "./components/ProjectManager/AddProject_PM";
+import AddModule_pm from "./components/ProjectManager/AddModule";
 import ProjectManagerNotifications from "./components/ProjectManager/Notifications";
 import ProjectManagerSettings from "./components/ProjectManager/Settings";
 import AddTask_pm from "./components/ProjectManager/AddTask";
@@ -78,6 +80,7 @@ function App() {
           <Route path="/ProjectManager/projects" element={<ProjectManagerProjects />} />
           <Route path="/ProjectManager/addProject" element={<AddProject_PM/>} />
           <Route path="/ProjectManager/module" element={<Module_pm/>} />
+          <Route path="/ProjectManager/addModule" element={<AddModule_pm/>} />
           {/* <Route path="/ProjectManager/tasks" element={<ProjectManagerTasks />} /> */}
           <Route path="/ProjectManager/tasks" element={<TaskPage_pm />} />
           <Route path="/ProjectManager/addTask" element={<AddTask_pm />} />

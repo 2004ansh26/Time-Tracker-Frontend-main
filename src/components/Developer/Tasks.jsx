@@ -1,7 +1,7 @@
 // src/components/Developer/Tasks.jsx
 import React, { useState, useEffect } from "react";
 import DeveloperNavbar from "./DeveloperNavbar";
-import "../../css/task.css"
+import "../../css/task_dev.css"
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -74,13 +74,13 @@ const Tasks = () => {
     <div>
       <DeveloperNavbar role="Developer" />
       <div className="tasks-container">
-        <h1>Tasks</h1>
+        <h1 >Tasks</h1>
         <div className="kanban-board">
           {/* Pending */}
           <div className="kanban-column pending">
             <h2>Pending</h2>
             {pendingTasks.map(task => (
-              <div key={task._id} className="task-card">
+              <div key={task._id} className="task-card_dev">
                 <h3>{task.title}</h3>
                 <p>{task.description}</p>
                 <p>Status: {task.status_id?.statusName ?? "Unknown"}</p>
@@ -95,7 +95,7 @@ const Tasks = () => {
           <div className="kanban-column running">
             <h2>Running</h2>
             {runningTasks.map(task => (
-              <div key={task._id} className="task-card">
+              <div key={task._id} className="task-card_dev">
                 <h3>{task.title}</h3>
                 <p>{task.description}</p>
                 <p>Status: {task.status_id?.statusName ?? "Unknown"}</p>
@@ -110,7 +110,7 @@ const Tasks = () => {
           <div className="kanban-column completed">
             <h2>Completed</h2>
             {completedTasks.map(task => (
-              <div key={task._id} className="task-card">
+              <div key={task._id} className="task-card_dev">
                 <h3>{task.title}</h3>
                 <p>{task.description}</p>
                 <p>Status: {task.status_id?.statusName ?? "Unknown"}</p>
