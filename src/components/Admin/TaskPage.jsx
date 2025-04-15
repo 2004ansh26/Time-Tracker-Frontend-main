@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Navbar from "./AdminNavbar";
-import "../../css/tasks.css";
+import "../../css/task.css";
 
 const TaskPage = () => {
   const [tasks, setTasks] = useState([]);
@@ -87,7 +87,7 @@ const TaskPage = () => {
         </div>
 
         {/* Task Grid */}
-        <div className="module-list">
+        <div className="task-grid">
           {tasks
             .filter((task) => !selectedProject || task.project_id?._id === selectedProject)
             .map((task) => (

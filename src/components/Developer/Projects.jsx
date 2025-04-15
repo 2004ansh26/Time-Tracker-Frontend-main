@@ -27,7 +27,7 @@ const Projects = () => {
     const fetchProjects = async () => {
       try {
         const developerId = localStorage.getItem("id");
-        print("developer id:", developerId);
+        console.log("developer id:", developerId);
         const response = await fetch(`http://localhost:8000/getAllProjectsByDeveloperId/${developerId}`);
         localStorage.getItem("id");
         if (!response.ok) throw new Error("Failed to fetch projects");

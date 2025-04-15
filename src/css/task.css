@@ -52,10 +52,11 @@ body {
 }
 
 /* Task Cards Grid */
-.module-list {
+.task-grid {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  justify-content: space-around;
+  /* gap: 20px;
+  flex-wrap: wrap; */
 }
 
 /* Task Card */

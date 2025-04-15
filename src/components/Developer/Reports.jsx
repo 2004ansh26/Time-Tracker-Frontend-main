@@ -74,7 +74,7 @@ const DeveloperReports = () => {
         </ResponsiveContainer>
       </div>
 
- <div className="report-card">
+<div className="report-card">
   <h3>Task Completion Status</h3>
   <ResponsiveContainer width="100%" height={300}>
     <PieChart>
@@ -90,10 +90,11 @@ const DeveloperReports = () => {
         outerRadius={100}
         label
       >
-        <Cell fill={COLORS[0]} />
-        <Cell fill={COLORS[1]} />
+        <Cell fill="#8884d8" /> {/* Purple for Completed */}
+        <Cell fill="#82ca9d" /> {/* Green for Pending */}
       </Pie>
       <Tooltip />
+      <Legend />
     </PieChart>
   </ResponsiveContainer>
 </div>

@@ -9,7 +9,7 @@ const DeveloperDashboard = () => {
     pendingTasks: 0,
     completedTasks: 0,
     hoursLoggedThisWeek: "40", // Placeholder value
-    overdueTasks: 0,
+    runningTasks: 0,
   });
   const [tasks, setTasks] = useState([]);
 
@@ -20,14 +20,14 @@ const DeveloperDashboard = () => {
 
   const fetchMetrics = async () => {
     try {
-      const response = await fetch("http://localhost:8000/getTask");
+      const response = await fetch(`http://localhost:8000/getAllTasksByDeveloperId/${localStorage.getItem("id")}`);
       const taskData = await response.json();
       setMetrics((prev) => ({
         ...prev,
         totalAssignedTasks: taskData.length,
-        pendingTasks: taskData.filter((t) => t.status === "pending").length,
-        completedTasks: taskData.filter((t) => t.status === "completed").length,
-        overdueTasks: taskData.filter((t) => t.status === "overdue").length,
+        pendingTasks: taskData.filter((t) => t.status_id.statusName === "pending").length,
+        completedTasks: taskData.filter((t) => t.status_id.statusName === "completed").length,
+        runningTasks: taskData.filter((t) => t.status_id.statusName === "running").length,
       }));
     } catch (error) {
       console.error("Error fetching metrics:", error);
@@ -62,14 +62,14 @@ const DeveloperDashboard = () => {
             <h3>Completed Tasks</h3>
             <p>{metrics.completedTasks}</p>
           </div>
-          <div className="card">
+          {/* <div className="card">
             <h3>Hours Logged This Week</h3>
             <p>{metrics.hoursLoggedThisWeek}</p>
-          </div>
-          <div className="card">
+          </div> */}
+          {/* <div className="card">
             <h3>Overdue Tasks</h3>
             <p>{metrics.overdueTasks}</p>
-          </div>
+          </div> */}
         </div>
 
         {/* Add charts or tables */}
